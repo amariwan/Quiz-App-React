@@ -59,7 +59,11 @@ export async function GET(request: Request): Promise<Response> {
             ) / results.length
           : 0,
       recentSubmissions: results.slice(-10),
-      uniqueSessions: new Set(results.map((r: { score?: number; sessionId?: string; timestamp?: string }) => r.sessionId).filter(Boolean)).size,
+      uniqueSessions: new Set(
+        results
+          .map((r: { score?: number; sessionId?: string; timestamp?: string }) => r.sessionId)
+          .filter(Boolean),
+      ).size,
       dateRange:
         results.length > 0
           ? {
