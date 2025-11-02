@@ -11,14 +11,43 @@ module.exports = [
         sourceType: 'module',
         ecmaFeatures: { jsx: true },
       },
-      globals: { React: 'readonly' },
+
+      // Flat config does not support `env`. Define commonly used globals explicitly
+      // so ESLint doesn't complain about undefined variables from browser/node/jest.
+      globals: {
+        // React
+        React: 'readonly',
+
+        // Browser globals
+        window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
+        location: 'readonly',
+        localStorage: 'readonly',
+        sessionStorage: 'readonly',
+        Event: 'readonly',
+
+        // Node globals
+        process: 'readonly',
+        Buffer: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        global: 'readonly',
+
+        // Jest testing globals
+        describe: 'readonly',
+        test: 'readonly',
+        it: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+        jest: 'readonly',
+      },
     },
 
-    env: { browser: true, node: true, es2021: true, jest: true },
-
     plugins: { '@typescript-eslint': require('@typescript-eslint/eslint-plugin') },
-
-    extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
 
     rules: {
       '@typescript-eslint/no-explicit-any': 'warn',
