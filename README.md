@@ -1,4 +1,4 @@
-# Lernkarten AP Teil 1
+# Quiz App
 
 🔒 **Secure Quiz Application with End-to-End Encryption**
 
