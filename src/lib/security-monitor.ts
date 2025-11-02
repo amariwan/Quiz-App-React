@@ -231,7 +231,7 @@ export class InputValidator {
   /**
    * Validate selections object
    */
-  static validateSelections(selections: SelectionsMap): boolean {
+  static validateSelections(selections: unknown): selections is SelectionsMap {
     if (!selections || typeof selections !== 'object') {
       SecurityMonitor.log(
         SecurityEventType.VALIDATION_FAILED,
@@ -242,7 +242,9 @@ export class InputValidator {
       return false;
     }
 
-    for (const [key, value] of Object.entries(selections)) {
+    const entries = Object.entries(selections as Record<string, unknown>);
+
+    for (const [key, value] of entries) {
       if (typeof key !== 'string' && typeof key !== 'number') {
         SecurityMonitor.log(
           SecurityEventType.VALIDATION_FAILED,

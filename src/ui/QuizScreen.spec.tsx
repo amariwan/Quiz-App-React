@@ -126,7 +126,7 @@ describe('QuizScreen', () => {
       serverResults: {
         score: 1,
         results: [{ id: 1, correct: 0, selection: 0, isCorrect: true }],
-        warning: null,
+        warning: undefined,
       },
       correctionQuestions: questions,
     });

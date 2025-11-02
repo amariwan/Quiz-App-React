@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { jest } from '@jest/globals';
 
 // Mocks must be set up before importing the module under test
 const mockGenerateKey = jest.fn(async () => ({ key: 'mock-key' }));

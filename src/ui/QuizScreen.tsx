@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, type ReactElement } from 'react';
 import {
   AntiCheatWarning,
   Question,
@@ -66,7 +66,7 @@ export function QuizScreen({
   startGame,
   restartGame,
   submitAnswer,
-}: QuizScreenProps): JSX.Element {
+}: QuizScreenProps): ReactElement {
   const gameRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
