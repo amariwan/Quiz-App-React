@@ -115,11 +115,7 @@ export function QuizScreen({
                   {error.message}
                 </p>
               )}
-              <button
-                className="intro-button"
-                onClick={startGame}
-                disabled={loading || submitting}
-              >
+              <button className="intro-button" onClick={startGame} disabled={loading || submitting}>
                 {t('start')}
               </button>
             </>

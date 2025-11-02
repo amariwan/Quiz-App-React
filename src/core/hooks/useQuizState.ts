@@ -33,9 +33,7 @@ export function useQuizState(initialQuestions: QuestionData[] = []): {
   const prev = useCallback(() => setCurrentIndex((i) => Math.max(0, i - 1)), []);
   const goTo = useCallback(
     (idx: number) =>
-      setCurrentIndex(() =>
-        Math.max(0, Math.min(idx, Math.max(questions.length - 1, 0))),
-      ),
+      setCurrentIndex(() => Math.max(0, Math.min(idx, Math.max(questions.length - 1, 0)))),
     [questions.length],
   );
 

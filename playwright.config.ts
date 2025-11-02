@@ -1,11 +1,13 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  testDir: './tests',
+  // Tests are located under the `e2e/tests` directory in this repo.
+  testDir: './e2e/tests',
   timeout: 30_000,
   expect: { timeout: 5000 },
   fullyParallel: true,
-  reporter: [['list'], ['html', { outputFolder: 'playwright-report' }]],
+  // Put the HTML report inside the `e2e/playwright-report` folder.
+  reporter: [['list'], ['html', { outputFolder: 'e2e/playwright-report' }]],
   use: {
     headless: true,
     viewport: { width: 1280, height: 800 },

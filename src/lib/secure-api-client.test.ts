@@ -22,7 +22,7 @@ jest.mock('./encryption', () => ({
 }));
 
 const mockLog = jest.fn();
-const mockIsAllowed = jest.fn((identifier: string) => true);
+const mockIsAllowed = jest.fn((_identifier: string) => true);
 const mockGetSummary = jest.fn(() => ({ totalEvents: 0 }));
 
 jest.mock('./security-monitor', () => ({

@@ -1,4 +1,3 @@
- 
 import path from 'path';
 
 type MockResponseInit = {
@@ -22,13 +21,15 @@ jest.mock('fs/promises', () => ({
   writeFile: (...args: unknown[]) => mockWriteFile(...args),
 }));
 
-const mockJson = jest.fn(<T,>(payload: T, opts?: MockResponseInit): MockJsonResult<T> => ({
-  payload,
-  opts: {
-    status: opts?.status,
-    headers: opts?.headers ?? {},
-  },
-}));
+const mockJson = jest.fn(
+  <T>(payload: T, opts?: MockResponseInit): MockJsonResult<T> => ({
+    payload,
+    opts: {
+      status: opts?.status,
+      headers: opts?.headers ?? {},
+    },
+  }),
+);
 
 jest.mock('next/server', () => ({
   NextResponse: {

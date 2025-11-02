@@ -20,7 +20,12 @@ jest.mock('@/components', () => {
     empty: number;
   };
 
-  const Question = ({ buttonText, onQuestionButtonClick, data, markSelection }: MockQuestionProps) => (
+  const Question = ({
+    buttonText,
+    onQuestionButtonClick,
+    data,
+    markSelection,
+  }: MockQuestionProps) =>
     React.createElement(
       'div',
       { 'data-testid': 'question' },
@@ -31,8 +36,7 @@ jest.mock('@/components', () => {
         },
         buttonText,
       ),
-    )
-  );
+    );
 
   const Results = ({ correct, wrong, empty }: MockResultsProps) =>
     React.createElement('div', { 'data-testid': 'results' }, `${correct}/${wrong}/${empty}`);
