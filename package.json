@@ -8,7 +8,8 @@
     "start": "next start -p 3000",
     "test": "jest --passWithNoTests",
     "test:e2e": "playwright test",
-    "lint": "eslint . --ext .js,.ts,.tsx",
+    "lint": "eslint --ext .js,.ts,.tsx .",
+    "fix:lint": "eslint --ext .js,.ts,.tsx . --fix",
     "format": "prettier --write ."
   },
   "dependencies": {
@@ -29,6 +30,7 @@
     "eslint": "^9.39.0",
     "eslint-config-prettier": "^10.1.8",
     "jest": "30.2.0",
+    "jiti": "^2.6.1",
     "prettier": "^3.6.2",
     "ts-jest": "29.4.5",
     "typescript": "5.9.3"

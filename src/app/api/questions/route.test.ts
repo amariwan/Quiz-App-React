@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 
 const mockJson = jest.fn((payload: any, opts?: any) => ({ payload, opts }));
 jest.mock('next/server', () => ({ NextResponse: { json: mockJson } }));

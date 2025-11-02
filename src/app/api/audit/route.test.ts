@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 import path from 'path';
 
 // Mocks must be defined before importing the module under test so the

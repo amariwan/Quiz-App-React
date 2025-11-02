@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
 // Mocks for filesystem and next response
 const mockReadFile = jest.fn();
 const mockWriteFile = jest.fn();
