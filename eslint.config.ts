@@ -1,6 +1,15 @@
 module.exports = [
   {
-    ignores: ['node_modules', '.next', 'out', 'dist', 'playwright-report', 'e2e'],
+    ignores: [
+      '**/node_modules/**',
+      '**/.next/**',
+      '**/out/**',
+      '**/dist/**',
+      '**/playwright-report/**',
+      '**/e2e/**',
+      '**/coverage/**',
+      '**/.turbo/**',
+    ],
 
     files: ['**/*.{js,jsx,ts,tsx,cjs,mjs}'],
 
@@ -52,8 +61,9 @@ module.exports = [
     rules: {
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/explicit-module-boundary-types': 'warn',
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
 
-      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': 'off',
       'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
   },

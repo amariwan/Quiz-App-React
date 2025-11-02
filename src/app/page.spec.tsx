@@ -1,90 +1,59 @@
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import type { QuizGameController } from '@/app/hooks/useQuizGame';
+import { useQuizGame } from '@/app/hooks/useQuizGame';
+import QuizScreen from '@/ui/QuizScreen';
+import Page from './page';
 
-// Mock components to keep the test focused on Page orchestration
-jest.mock('@/components', () => ({
-  AntiCheatWarning: () => <div data-testid="anti-cheat" />,
-  Question: (props: any) => <div data-testid="question">{props.buttonText ?? 'btn'}</div>,
-  QuestionCorrection: () => <div data-testid="correction" />,
-  Results: () => <div data-testid="results" />,
-  SecurityDashboard: () => <div data-testid="security-dashboard" />,
-}));
+type QuizScreenMock = jest.MockedFunction<typeof QuizScreen>;
 
-// Mock hooks and libs
-jest.mock('@/hooks/useQuestions', () => ({
+jest.mock('@/app/hooks/useQuizGame');
+jest.mock('@/ui/QuizScreen', () => ({
   __esModule: true,
-  default: () => ({
-    questions: [{ id: 1, text: 'Q1', answers: ['a', 'b'], correct: 0 }],
-    loading: false,
-    error: null,
-    reload: jest.fn(),
-    setQuestions: jest.fn(),
-  }),
-}));
-
-jest.mock('@/hooks/useCounter', () => ({
-  __esModule: true,
-  default: (initial = 0) => ({ value: initial, add: jest.fn(), reset: jest.fn() }),
+  default: jest.fn(() => <div data-testid="quiz-screen" />),
 }));
 
 jest.mock('@/i18n/useTranslation', () => ({
   useTranslation: () => ({
-    t: (k: string) => {
-      const map: Record<string, string> = {
-        'intro.title': 'Test Title',
-        'intro.desc': 'desc',
-        start: 'Start Quiz',
-        next: 'Next Question',
-        finish: 'Finish Quiz',
-        restart: 'Restart Quiz',
-      };
-      return map[k] ?? k;
-    },
+    t: (key: string) => key,
     locale: 'en',
     setLocale: jest.fn(),
   }),
 }));
 
-jest.mock('@/lib/secure-api-client', () => ({
-  SecureApiClient: {
-    initializeSession: jest.fn(async () => undefined),
-    submitAnswers: jest.fn(async () => ({ score: 0, results: [] })),
-    clearSession: jest.fn(),
-  },
-}));
-
-jest.mock('@/lib/anti-cheat', () => ({
-  AntiCheat: {
-    initialize: jest.fn(),
-    reset: jest.fn(),
-    recordAnswerTiming: jest.fn(),
-    analyzeAnswerPattern: jest.fn(),
-    getSessionReport: jest.fn(() => ({ suspicionScore: 0, tabSwitches: 0 })),
-  },
-}));
-
-jest.mock('@/lib/security-monitor', () => ({
-  SecurityMonitor: { log: jest.fn() },
-  SecurityEventType: {},
-  SecurityLevel: {},
-}));
-
-import Page from './page';
+const controllerStub: QuizGameController = {
+  loading: false,
+  error: null,
+  reload: jest.fn(async () => undefined),
+  gameStarted: false,
+  isFinished: false,
+  submitting: false,
+  questions: [],
+  currentQuestion: null,
+  currentIndex: 0,
+  totalQuestions: 0,
+  selections: {},
+  serverResults: null,
+  summary: { total: 0, correct: 0, wrong: 0, empty: 0, warning: null },
+  progress: [],
+  correctionQuestions: null,
+  startGame: jest.fn(),
+  restartGame: jest.fn(),
+  submitAnswer: jest.fn(),
+};
 
 describe('Page (app/page)', () => {
-  it('renders intro and starts game when start clicked', () => {
+  it('renders QuizScreen with controller data and translation fn', () => {
+    (useQuizGame as jest.Mock).mockReturnValue(controllerStub);
+
     render(<Page />);
 
-    // intro title and start button
-    expect(screen.getByText('Test Title')).toBeDefined();
-    const startBtn = screen.getByText('Start Quiz');
-    expect(startBtn).toBeDefined();
-
-    // start the game
-    fireEvent.click(startBtn);
-
-    // after starting, SecurityDashboard and AntiCheat should be present (mocked)
-    expect(screen.getByTestId('security-dashboard')).toBeDefined();
-    expect(screen.getByTestId('anti-cheat')).toBeDefined();
+    expect(QuizScreen as unknown as QuizScreenMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ...controllerStub,
+        t: expect.any(Function),
+      }),
+      {},
+    );
   });
 });

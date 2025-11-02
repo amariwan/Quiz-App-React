@@ -15,6 +15,15 @@ This is a Next.js-based quiz application with enterprise-grade security features
 - 🔒 Secure HTTP Headers
 - ✨ Input Validation & Sanitization
 
+## 🧱 Architecture Overview
+
+- `src/core` — framework-agnostic domain logic (scoring, state hooks, deterministic utilities).
+- `src/app/hooks` — Next.js specific orchestration hooks (fetching, anti-cheat lifecycle, secure API glue).
+- `src/ui` — presentational client components that compose core + hooks into the quiz experience.
+- `src/components` — reusable UI primitives (question, results, security widgets).
+
+This separation keeps behaviour identical while making a future Next.js App Router split between server components and client islands straightforward.
+
 ## 🔒 Security Features
 
 This application implements multiple layers of security:

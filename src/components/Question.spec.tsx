@@ -28,4 +28,14 @@ describe('Question', () => {
     fireEvent.click(btn);
     expect(onClick).toHaveBeenCalledWith(2, sample);
   });
+
+  it('emits null when no option is selected', () => {
+    const onClick = jest.fn();
+    render(<Question data={sample} hasButton={true} onQuestionButtonClick={onClick} />);
+
+    const btn = screen.getByText('next');
+    fireEvent.click(btn);
+
+    expect(onClick).toHaveBeenCalledWith(null, sample);
+  });
 });

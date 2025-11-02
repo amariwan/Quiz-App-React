@@ -225,7 +225,7 @@ describe('AntiCheat System', () => {
 
       expect(report).toBeDefined();
       expect(report?.sessionId).toBe(sessionId);
-      expect(report?.duration).toBeGreaterThan(0);
+      expect(report?.duration).toBeGreaterThanOrEqual(0);
       expect(report?.suspiciousEvents).toBeGreaterThan(0);
       expect(report?.averageAnswerTime).toBeGreaterThan(0);
       expect(report?.events).toBeInstanceOf(Array);

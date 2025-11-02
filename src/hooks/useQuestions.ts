@@ -1,11 +1,14 @@
 import { SecureApiClient } from '@/lib/secure-api-client';
 import { SecurityEventType, SecurityLevel, SecurityMonitor } from '@/lib/security-monitor';
+import type { QuestionData } from '@/types';
 import { useEffect, useState } from 'react';
 
-type Question = any;
+type QuestionsResponse = {
+  questions?: QuestionData[];
+};
 
 export default function useQuestions() {
-  const [questions, setQuestions] = useState<Question[] | null>(null);
+  const [questions, setQuestions] = useState<QuestionData[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -19,8 +22,8 @@ export default function useQuestions() {
         'Loading questions with encryption',
       );
 
-      const json = await SecureApiClient.fetchQuestions();
-      setQuestions(json.questions || []);
+      const json = (await SecureApiClient.fetchQuestions()) as QuestionsResponse;
+      setQuestions(Array.isArray(json.questions) ? json.questions : []);
 
       SecurityMonitor.log(
         SecurityEventType.API_REQUEST,
