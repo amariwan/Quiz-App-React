@@ -15,7 +15,7 @@ interface AntiCheatReport {
   suspicionScore: number;
   isSuspicious: boolean;
   averageAnswerTime: number;
-  events: any[];
+  events: unknown[];
 }
 
 // Security headers
@@ -29,10 +29,10 @@ const securityHeaders = {
 
 async function persistResultIfAuthorized(
   score: number,
-  results: any[],
+  results: unknown[],
   request: Request,
   sessionId: string | null,
-) {
+): Promise<void> {
   try {
     const apiKey = request.headers.get('x-api-key') ?? request.headers.get('X-API-KEY');
     if (!apiKey) return;
@@ -41,11 +41,11 @@ async function persistResultIfAuthorized(
     if (apiKey !== expected) return;
 
     const outPath = path.resolve(process.cwd(), 'data', 'results.json');
-    let existing: any[] = [];
+    let existing: Array<Record<string, unknown>> = [];
     try {
       const raw = await fs.readFile(outPath, 'utf8');
       existing = JSON.parse(raw || '[]');
-    } catch (e) {
+    } catch {
       existing = [];
     }
 
@@ -59,13 +59,13 @@ async function persistResultIfAuthorized(
     await fs.mkdir(path.dirname(outPath), { recursive: true });
     await fs.writeFile(outPath, JSON.stringify(existing, null, 2), 'utf8');
 
-    console.log('[SECURITY] Result persisted', { sessionId, score });
-  } catch (e) {
-    console.error('[SECURITY] Failed to persist result', e);
+    console.warn('[SECURITY] Result persisted', { sessionId, score });
+  } catch (err) {
+    console.error('[SECURITY] Failed to persist result', err);
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: Request): Promise<Response> {
   try {
     const sessionId = request.headers.get('X-Session-Id');
     const dataHash = request.headers.get('X-Data-Hash');
@@ -74,7 +74,7 @@ export async function POST(request: Request) {
       request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
 
     // Log submission attempt
-    console.log('[SECURITY] Quiz submission received', {
+    console.warn('[SECURITY] Quiz submission received', {
       timestamp: new Date().toISOString(),
       sessionId: sessionId?.substring(0, 16) + '...',
       hasDataHash: !!dataHash,
@@ -138,7 +138,7 @@ export async function POST(request: Request) {
     // Anti-cheat validation
     let isSuspicious = false;
     if (antiCheatReport) {
-      console.log('[ANTI_CHEAT] Report received', {
+      console.warn('[ANTI_CHEAT] Report received', {
         sessionId,
         suspicionScore: antiCheatReport.suspicionScore,
         tabSwitches: antiCheatReport.tabSwitches,
@@ -172,7 +172,7 @@ export async function POST(request: Request) {
     const { score, results } = computeResults(questions, selections);
 
     // Log results
-    console.log('[SECURITY] Quiz results computed', {
+    console.warn('[SECURITY] Quiz results computed', {
       sessionId: sessionId?.substring(0, 16) + '...',
       score,
       totalQuestions: results.length,

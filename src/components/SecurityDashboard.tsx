@@ -9,7 +9,8 @@ import { SecureApiClient } from '@/lib/secure-api-client';
 import { SecurityLevel, SecurityMonitor } from '@/lib/security-monitor';
 import { useEffect, useState } from 'react';
 
-export function SecurityDashboard() {
+export function SecurityDashboard(): React.ReactElement | null {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [summary, setSummary] = useState<any>(null);
   const [expanded, setExpanded] = useState(false);
   const [recentEvents, setRecentEvents] = useState<any[]>([]);

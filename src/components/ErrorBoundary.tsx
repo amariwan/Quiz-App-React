@@ -18,15 +18,15 @@ export default class ErrorBoundary extends React.Component<
     this.state = { hasError: false, error: null };
   }
 
-  static getDerivedStateFromError(error: Error) {
+  static getDerivedStateFromError(error: Error): Partial<State> | null {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, info: any) {
+  componentDidCatch(error: Error, info: React.ErrorInfo): void {
     console.error('Unhandled error caught by ErrorBoundary:', error, info);
   }
 
-  render() {
+  render(): React.ReactNode {
     if (this.state.hasError) {
       return (
         <div style={{ padding: 24 }}>

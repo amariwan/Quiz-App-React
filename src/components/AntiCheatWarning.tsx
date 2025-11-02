@@ -8,7 +8,7 @@
 import { AntiCheat, CheatEvent, CheatType } from '@/lib/anti-cheat';
 import { useEffect, useState } from 'react';
 
-export default function AntiCheatWarning() {
+export default function AntiCheatWarning(): React.ReactElement | null {
   const [warnings, setWarnings] = useState<CheatEvent[]>([]);
   const [showWarning, setShowWarning] = useState(false);
   const [suspicionScore, setSuspicionScore] = useState(0);

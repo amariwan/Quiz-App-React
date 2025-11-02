@@ -8,7 +8,10 @@ type Props = {
   selections?: SelectionsMap;
 };
 
-export default function QuestionCorrection({ questions, selections = {} }: Props) {
+export default function QuestionCorrection({
+  questions,
+  selections = {},
+}: Props): React.ReactElement {
   return (
     <div className="correction">
       {questions.map((question) => {

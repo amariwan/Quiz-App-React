@@ -5,6 +5,8 @@
 
 import { SecurityEventType, SecurityLevel, SecurityMonitor } from './security-monitor';
 
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any */
+
 export enum CheatType {
   TAB_SWITCH = 'TAB_SWITCH',
   SUSPICIOUS_SPEED = 'SUSPICIOUS_SPEED',

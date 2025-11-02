@@ -2,7 +2,7 @@
 
 import { useTranslation } from '@/i18n/useTranslation';
 
-export default function LocaleSwitcher() {
+export default function LocaleSwitcher(): React.ReactElement {
   const { locale, setLocale } = useTranslation();
 
   return (

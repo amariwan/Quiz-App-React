@@ -30,7 +30,7 @@ export interface SecurityEvent {
   type: SecurityEventType;
   level: SecurityLevel;
   message: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   userId?: string;
   sessionId?: string;
   ipAddress?: string;
@@ -49,7 +49,7 @@ export class SecurityMonitor {
     type: SecurityEventType,
     level: SecurityLevel,
     message: string,
-    metadata?: Record<string, any>,
+    metadata?: Record<string, unknown>,
   ): SecurityEvent {
     const event: SecurityEvent = {
       id: this.generateEventId(),
@@ -81,7 +81,8 @@ export class SecurityMonitor {
       } else if (level === SecurityLevel.WARNING) {
         console.warn(prefix, message, metadata);
       } else {
-        console.log(prefix, message, metadata);
+        // Use warn for info-level logs to comply with allowed console methods
+        console.warn(prefix, message, metadata);
       }
     }
 

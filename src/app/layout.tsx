@@ -8,7 +8,11 @@ export const metadata = {
   title: 'Quiz App',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}): React.ReactElement {
   return (
     <html lang="de">
       <body>

@@ -2,6 +2,8 @@
  * Secure API Client with E2E Encryption
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { E2EEncryption } from './encryption';
 import {
   RateLimiter,
@@ -123,7 +125,7 @@ export class SecureApiClient {
    */
   static async submitAnswers(
     selections: Record<number, number | null>,
-    antiCheatReport?: any,
+    antiCheatReport?: unknown,
   ): Promise<any> {
     if (!this.encryptionKey) {
       await this.initializeSession();

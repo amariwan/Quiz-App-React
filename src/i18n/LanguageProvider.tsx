@@ -12,7 +12,8 @@ const locales: Record<Locale, Translations> = { en, de };
 type I18nContextShape = {
   locale: Locale;
   setLocale: (l: Locale) => void;
-  t: (key: string, vars?: Record<string, string | number>) => string;
+  // Allow unknown values in translation params to be flexible for components
+  t: (key: string, vars?: Record<string, unknown>) => string;
 };
 
 const I18nContext = createContext<I18nContextShape>({
@@ -21,7 +22,7 @@ const I18nContext = createContext<I18nContextShape>({
   t: (k: string) => k,
 });
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
+export function LanguageProvider({ children }: { children: React.ReactNode }): React.ReactElement {
   const [locale, setLocale] = useState<Locale>(() => {
     try {
       const saved =
@@ -31,7 +32,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
         const nav = navigator.language?.split('-')[0] as Locale | undefined;
         if (nav && (nav === 'en' || nav === 'de')) return nav;
       }
-    } catch (e) {
+    } catch {
       // ignore
     }
     return 'de';
@@ -41,16 +42,17 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     try {
       localStorage.setItem('locale', locale);
       if (typeof document !== 'undefined') document.documentElement.lang = locale;
-    } catch (e) {
+    } catch {
       // ignore
     }
   }, [locale]);
 
-  const t = (key: string, vars?: Record<string, string | number>) => {
+  const t = (key: string, vars?: Record<string, unknown>) => {
     const str = (locales[locale] && locales[locale][key]) || key;
     if (!vars) return str;
-    return Object.keys(vars).reduce(
-      (s, k) => s.replace(new RegExp(`\\{${k}\\}`, 'g'), String(vars[k])),
+    const v = vars as Record<string, unknown>;
+    return Object.keys(v).reduce(
+      (s, k) => s.replace(new RegExp(`\\{${k}\\}`, 'g'), String(v[k])),
       str,
     );
   };
@@ -58,4 +60,4 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   return <I18nContext.Provider value={{ locale, setLocale, t }}>{children}</I18nContext.Provider>;
 }
 
-export const useI18n = () => useContext(I18nContext);
+export const useI18n = (): I18nContextShape => useContext(I18nContext);

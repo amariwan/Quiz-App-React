@@ -1,4 +1,5 @@
- 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // Mocks for filesystem and next response
 const mockReadFile = jest.fn();
 const mockWriteFile = jest.fn();
@@ -10,8 +11,8 @@ jest.mock('fs/promises', () => ({
   mkdir: (...args: any[]) => mockMkdir(...args),
 }));
 
-const mockJson = jest.fn((payload: any, opts?: any) => ({ payload, opts }));
-jest.mock('next/server', () => ({ NextResponse: { json: mockJson } }));
+const mockNextJson = jest.fn((payload: any, opts?: any) => ({ payload, opts }));
+jest.mock('next/server', () => ({ NextResponse: { json: mockNextJson } }));
 
 // Mock computeResults
 const mockCompute = jest.fn(() => ({ score: 0, results: [] }));
@@ -23,7 +24,7 @@ jest.mock('@/lib/quiz', () => ({
 }));
 
 // Mock rate-limit helpers
-const mockIsBlocked = jest.fn(async (id: string) => false);
+const mockIsBlocked = jest.fn(async (_id: string) => false);
 const mockCheckRate = jest.fn(async () => ({ success: true, limit: 10, remaining: 9, reset: 0 }));
 const mockBlockSession = jest.fn(async () => undefined);
 const mockStoreSession = jest.fn(async () => undefined);

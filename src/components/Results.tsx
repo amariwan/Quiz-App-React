@@ -8,7 +8,7 @@ type Props = {
   empty: number;
 };
 
-export default function Results({ wrong, correct, empty }: Props) {
+export default function Results({ wrong, correct, empty }: Props): React.ReactElement {
   const { t } = useTranslation();
 
   return (

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 
@@ -11,7 +12,7 @@ const mockSummary = {
 const mockRecentEvents: any[] = [];
 
 const mockUnsubscribe = jest.fn();
-const mockSubscribe = jest.fn((cb: any) => {
+const mockSubscribe = jest.fn((_cb: any) => {
   // optionally call once
   return mockUnsubscribe;
 });

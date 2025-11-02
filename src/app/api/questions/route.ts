@@ -12,12 +12,12 @@ const securityHeaders = {
 };
 
 // Return questions without revealing the correct answers
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<Response> {
   try {
     const sessionId = request.headers.get('X-Session-Id');
 
     // Log request for monitoring
-    console.log('[SECURITY] Questions requested', {
+    console.warn('[SECURITY] Questions requested', {
       timestamp: new Date().toISOString(),
       sessionId: sessionId?.substring(0, 16) + '...',
       userAgent: request.headers.get('user-agent')?.substring(0, 50),

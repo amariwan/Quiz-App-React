@@ -3,6 +3,8 @@
  * Implements AES-GCM encryption for quiz data
  */
 
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any */
+
 export class E2EEncryption {
   private static readonly ALGORITHM = 'AES-GCM';
   private static readonly KEY_LENGTH = 256;

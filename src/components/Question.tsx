@@ -21,7 +21,7 @@ export default function Question({
   onQuestionButtonClick,
   showAnswer = false,
   markSelection = null,
-}: Props) {
+}: Props): React.ReactElement {
   const { t } = useTranslation();
   const [answer, setAnswer] = useState<string | null>(null);
   const parseValue = (value: string | null): number | null =>
@@ -43,7 +43,7 @@ export default function Question({
     try {
       gsap.fromTo(qText, { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.4 });
       gsap.fromTo(lis, { opacity: 0, x: 40 }, { x: 0, opacity: 1, duration: 0.4, stagger: 0.1 });
-    } catch (e) {
+    } catch {
       // fail gracefully if gsap not available
     }
   }, [data]);

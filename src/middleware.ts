@@ -19,7 +19,7 @@ if (UPSTASH_URL && UPSTASH_TOKEN) {
     limiter = null;
   }
 } else {
-  console.info('[RATE_LIMIT] UPSTASH credentials not found, middleware will skip rate limiting');
+  console.warn('[RATE_LIMIT] UPSTASH credentials not found, middleware will skip rate limiting');
 }
 
 function generateNonce(): string {

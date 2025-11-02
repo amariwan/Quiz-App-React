@@ -14,7 +14,7 @@ const securityHeaders = {
  * Get security audit logs
  * Requires API key authentication
  */
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<Response> {
   try {
     // Check authentication
     const apiKey = request.headers.get('x-api-key') ?? request.headers.get('X-API-KEY');
@@ -34,12 +34,16 @@ export async function GET(request: Request) {
 
     // Read results/audit data
     const resultsPath = path.resolve(process.cwd(), 'data', 'results.json');
-    let results = [];
+    let results: Array<{ score?: number; sessionId?: string; timestamp?: string }> = [];
 
     try {
       const raw = await fs.readFile(resultsPath, 'utf8');
-      results = JSON.parse(raw || '[]');
-    } catch (e) {
+      results = JSON.parse(raw || '[]') as Array<{
+        score?: number;
+        sessionId?: string;
+        timestamp?: string;
+      }>;
+    } catch {
       results = [];
     }
 
@@ -48,10 +52,14 @@ export async function GET(request: Request) {
       totalSubmissions: results.length,
       averageScore:
         results.length > 0
-          ? results.reduce((sum: number, r: any) => sum + r.score, 0) / results.length
+          ? results.reduce(
+              (sum: number, r: { score?: number; sessionId?: string; timestamp?: string }) =>
+                sum + (r.score ?? 0),
+              0,
+            ) / results.length
           : 0,
       recentSubmissions: results.slice(-10),
-      uniqueSessions: new Set(results.map((r: any) => r.sessionId).filter(Boolean)).size,
+      uniqueSessions: new Set(results.map((r: { score?: number; sessionId?: string; timestamp?: string }) => r.sessionId).filter(Boolean)).size,
       dateRange:
         results.length > 0
           ? {
@@ -61,7 +69,7 @@ export async function GET(request: Request) {
           : null,
     };
 
-    console.log('[SECURITY] Audit log accessed', {
+    console.warn('[SECURITY] Audit log accessed', {
       timestamp: new Date().toISOString(),
       totalRecords: results.length,
     });
@@ -80,7 +88,7 @@ export async function GET(request: Request) {
  * Clear audit logs
  * Requires API key authentication
  */
-export async function DELETE(request: Request) {
+export async function DELETE(request: Request): Promise<Response> {
   try {
     // Check authentication
     const apiKey = request.headers.get('x-api-key') ?? request.headers.get('X-API-KEY');
@@ -100,7 +108,7 @@ export async function DELETE(request: Request) {
     const resultsPath = path.resolve(process.cwd(), 'data', 'results.json');
     await fs.writeFile(resultsPath, '[]', 'utf8');
 
-    console.log('[SECURITY] Audit logs cleared', {
+    console.warn('[SECURITY] Audit logs cleared', {
       timestamp: new Date().toISOString(),
     });
 
