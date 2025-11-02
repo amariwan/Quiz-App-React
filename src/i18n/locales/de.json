@@ -1,0 +1,12 @@
+{
+  "app.title": "Lernkarten AP Teil 1",
+  "intro.title": "Lernkarten AP Teil 1",
+  "intro.desc": "Der Test enthält {count} Fragen und es gibt kein Zeitlimit.",
+  "start": "Quiz starten",
+  "restart": "Quiz neu starten",
+  "next": "Nächste Frage",
+  "finish": "Quiz beenden",
+  "results.correct": "RICHTIG",
+  "results.wrong": "FALSCH",
+  "results.empty": "LEER"
+}

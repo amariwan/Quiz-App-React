@@ -1,0 +1,61 @@
+# Node modules
+node_modules/
+
+# Next.js build output
+.next/
+out/
+build/
+dist/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Test coverage and reports
+coverage/
+.nyc_output/
+jest-report/
+test-results/
+
+# Playwright
+playwright-report/
+playwright/.cache/
+
+# Caches
+.cache/
+.cache-loader/
+.parcel-cache/
+
+# Misc
+.eslintcache
+*.tgz
+
+# IDEs and editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+/.next
+/dist
+/.turbo
+/.idea
+.DS_Store

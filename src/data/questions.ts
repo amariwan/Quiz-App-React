@@ -1,0 +1,238 @@
+import { QuestionData } from '@/types';
+
+export const questions: QuestionData[] = [
+  {
+    id: 1,
+    text: 'Wie ist die Zeitkomplexität der binären Suche auf einem sortierten Array?',
+    answers: ['O(1)', 'O(log n)', 'O(n)', 'O(n log n)'],
+    correct: 1,
+  },
+  {
+    id: 2,
+    text: 'Welche SQL-Isolationsebene garantiert serialisierbare Ausführung?',
+    answers: ['READ UNCOMMITTED', 'READ COMMITTED', 'REPEATABLE READ', 'SERIALIZABLE'],
+    correct: 3,
+  },
+  {
+    id: 3,
+    text: 'Welche Header machen eine HTTP-Antwort 10 Minuten lang cachebar (öffentlich)?',
+    answers: [
+      'Cache-Control: no-store',
+      'Cache-Control: public, max-age=600',
+      'Pragma: no-cache',
+      'ETag nur ohne Cache-Control',
+    ],
+    correct: 1,
+  },
+  {
+    id: 4,
+    text: 'Welcher JWT-Claim hilft, Replay über falsche Empfänger zu verhindern?',
+    answers: ['iss', 'sub', 'aud', 'jti'],
+    correct: 2,
+  },
+  {
+    id: 5,
+    text: 'Was passiert in Kubernetes, wenn eine livenessProbe dauerhaft fehlschlägt?',
+    answers: [
+      'Pod wird ignoriert',
+      'Container wird regelmäßig neugestartet',
+      'Deployment wird skaliert',
+      "Nur Readiness wird auf 'false' gesetzt",
+    ],
+    correct: 1,
+  },
+  {
+    id: 6,
+    text: 'TypeScript: Was trifft zu?',
+    answers: [
+      '`any` erzwingt Type Narrowing',
+      '`unknown` zwingt zu Type Guards vor Nutzung',
+      '`never` ist Obertyp aller Typen',
+      '`unknown` ist Untertyp aller Typen',
+    ],
+    correct: 1,
+  },
+  {
+    id: 7,
+    text: 'React: Wofür steht `useCallback` primär?',
+    answers: [
+      'Memoisiert das Ergebnis teurer Berechnungen',
+      'Memoisiert die Funktionsreferenz',
+      'Triggert immer Re-Render',
+      'Ersetzt `useMemo` vollständig',
+    ],
+    correct: 1,
+  },
+  {
+    id: 8,
+    text: "Nachrichtenverarbeitung mit 'at-least-once': Was ist Pflicht?",
+    answers: [
+      'Globale Transaktionen',
+      'Exakt-einmal-Zustellung',
+      'Idempotente Consumer (z. B. Idempotency-Key)',
+      'Nur FIFO-Queues verwenden',
+    ],
+    correct: 2,
+  },
+  {
+    id: 9,
+    text: 'CAP-Theorem: Was priorisiert ein CP-System bei Partition?',
+    answers: [
+      'Verfügbarkeit, opfert Konsistenz',
+      'Konsistenz, opfert Verfügbarkeit',
+      'Beides bleibt erhalten',
+      'Keines von beiden',
+    ],
+    correct: 1,
+  },
+  {
+    id: 10,
+    text: 'Welches LIKE-Pattern nutzt einen B-Tree-Index auf `name` typischerweise?',
+    answers: [
+      "WHERE name LIKE '%abc'",
+      "WHERE name LIKE 'abc%'",
+      "WHERE LOWER(name) LIKE '%abc%' ohne Ausdrucksindex",
+      "WHERE name LIKE '%a%b%c%'",
+    ],
+    correct: 1,
+  },
+  {
+    id: 11,
+    text: 'Sicheres Passwort-Hashing im Jahr 2025:',
+    answers: [
+      'MD5 mit Salt',
+      'SHA-256 ohne Salt',
+      'Argon2id mit individuellem Salt und angepassten Parametern',
+      'Base64-Encoding',
+    ],
+    correct: 2,
+  },
+  {
+    id: 12,
+    text: 'Welcher OAuth2/OIDC-Flow ist für SPAs empfohlen?',
+    answers: [
+      'Implicit Flow',
+      'Resource Owner Password Credentials',
+      'Authorization Code Flow mit PKCE',
+      'Client Credentials',
+    ],
+    correct: 2,
+  },
+  {
+    id: 13,
+    text: 'Datenkonsistenz über Microservices ohne 2PC:',
+    answers: [
+      'Transactional Outbox + Change Data Capture',
+      'Periodische Full-Table-Syncs',
+      'Synchronous REST-Kaskaden',
+      'Nur Retries erhöhen',
+    ],
+    correct: 0,
+  },
+  {
+    id: 14,
+    text: 'Wie reduzierst du Docker-Image-Größe effektiv?',
+    answers: [
+      'Alles in einem Layer',
+      'Multi-Stage-Build und `.dockerignore`',
+      'Node_modules immer mit einpacken',
+      'Nur `latest` Tag verwenden',
+    ],
+    correct: 1,
+  },
+  {
+    id: 15,
+    text: 'Welche Technik liefert Perfect Forward Secrecy (PFS) in TLS?',
+    answers: [
+      'RSA Key Exchange',
+      'ECDHE (ephemeres Diffie-Hellman)',
+      'Statisches DH',
+      'Nur größere RSA-Schlüssel',
+    ],
+    correct: 1,
+  },
+  {
+    id: 16,
+    text: 'Zeit und Zeitzonen: Best Practice für Speicherung?',
+    answers: [
+      'Lokalzeit je Nutzer speichern',
+      'UTC speichern, Umwandlung an den Rändern',
+      'Epoch-Millis in UI umrechnen und speichern',
+      'Sommerzeit im Code hart verdrahten',
+    ],
+    correct: 1,
+  },
+  {
+    id: 17,
+    text: 'Welche Tests sollen externes I/O mocken und sehr schnell laufen?',
+    answers: ['End-to-End-Tests', 'Integrationstests', 'Unit-Tests', 'Manuelle Tests'],
+    correct: 2,
+  },
+  {
+    id: 18,
+    text: 'Node.js und CPU-lastige Tasks:',
+    answers: [
+      'Blockieren Event Loop; Lösung: Worker Threads',
+      'Sind unproblematisch wegen libuv',
+      'Laufen automatisch parallel',
+      'Am besten in `setTimeout(0)` verpacken',
+    ],
+    correct: 0,
+  },
+  {
+    id: 19,
+    text: 'Welches Redis-Muster passt für einen Sliding-Window-Rate-Limiter?',
+    answers: ['LIST mit LPOP', 'HASH pro Nutzer', 'SORTED SET mit Timestamps', 'PUB/SUB'],
+    correct: 2,
+  },
+  {
+    id: 20,
+    text: 'Welche HTTP-Methode ist per Spezifikation idempotent?',
+    answers: ['POST', 'PATCH', 'PUT', 'CONNECT'],
+    correct: 2,
+  },
+  {
+    id: 21,
+    text: 'Git: Was trifft auf `rebase` (gegenüber `merge`) zu?',
+    answers: [
+      'Schreibt Historie um, erzeugt neue Commits',
+      'Erzeugt immer einen Merge-Commit',
+      'Bewahrt Commit-Hashes unverändert',
+      'Ist identisch zu `merge --no-ff`',
+    ],
+    correct: 0,
+  },
+  {
+    id: 22,
+    text: 'Serverless (AWS Lambda): Maßnahme gegen Cold-Starts?',
+    answers: [
+      'Mehr Speicher statt alles andere',
+      'Provisioned Concurrency aktivieren',
+      'Mehr Umgebungsvariablen',
+      'Layers deaktivieren',
+    ],
+    correct: 1,
+  },
+  {
+    id: 23,
+    text: 'Welche Anomalie ist unter READ COMMITTED weiterhin möglich?',
+    answers: [
+      'Dirty Read',
+      'Non-Repeatable Read',
+      'Phantom Read ist ausgeschlossen',
+      'Lost Update ist ausgeschlossen',
+    ],
+    correct: 1,
+  },
+  {
+    id: 24,
+    text: 'CI/CD: Was sollte früh (fail-fast) passieren?',
+    answers: [
+      'Docker-Build vor Tests',
+      'Deploy vor Linting',
+      'Linting & Unit-Tests vor dem Build',
+      'Manuelles QA vor jedem Commit',
+    ],
+    correct: 2,
+  },
+];

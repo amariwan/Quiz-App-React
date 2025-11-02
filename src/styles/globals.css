@@ -1,0 +1,6 @@
+/* Global styles copied from src/css/style.css (kept as-is for now) */
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap");
+
+/* trimmed for brevity in this file; full CSS kept in src/css/style.css as source of truth */
+body { margin: 0; }
+#app { width: 100%; }

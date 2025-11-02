@@ -1,0 +1,12 @@
+{
+  "app.title": "Quiz App",
+  "intro.title": "Flashcards AP Part 1",
+  "intro.desc": "The test contains {count} questions and there is no time limit.",
+  "start": "Start Quiz",
+  "restart": "Restart Quiz",
+  "next": "Next Question",
+  "finish": "Finish Quiz",
+  "results.correct": "CORRECT",
+  "results.wrong": "WRONG",
+  "results.empty": "EMPTY"
+}
