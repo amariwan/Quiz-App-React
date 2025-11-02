@@ -1,17 +1,43 @@
  
 import path from 'path';
 
-// Mocks must be defined before importing the module under test so the
-// module picks up the mocked implementations during import-time.
+type MockResponseInit = {
+  status?: number;
+  headers?: Record<string, string>;
+};
+
+type MockJsonResult<T> = {
+  payload: T;
+  opts: {
+    status?: number;
+    headers: Record<string, string>;
+  };
+};
+
+type HeaderGetter = (name: string) => string | null;
+
+type MockRequest = {
+  headers: {
+    get: HeaderGetter;
+  };
+};
+
 const mockReadFile = jest.fn();
 const mockWriteFile = jest.fn();
 
 jest.mock('fs/promises', () => ({
-  readFile: (...args: any[]) => mockReadFile(...args),
-  writeFile: (...args: any[]) => mockWriteFile(...args),
+  readFile: (...args: unknown[]) => mockReadFile(...args),
+  writeFile: (...args: unknown[]) => mockWriteFile(...args),
 }));
 
-const mockJson = jest.fn((payload: any, opts?: any) => ({ payload, opts }));
+const mockJson = jest.fn(<T,>(payload: T, opts?: MockResponseInit): MockJsonResult<T> => ({
+  payload,
+  opts: {
+    status: opts?.status,
+    headers: opts?.headers ?? {},
+  },
+}));
+
 jest.mock('next/server', () => ({
   NextResponse: {
     json: mockJson,
@@ -20,6 +46,12 @@ jest.mock('next/server', () => ({
 
 // Now import the module under test
 import * as auditRoute from './route';
+
+const createRequest = (getter: HeaderGetter): MockRequest => ({
+  headers: {
+    get: getter,
+  },
+});
 
 describe('Audit route API', () => {
   const OLD_ENV = process.env;
@@ -34,9 +66,9 @@ describe('Audit route API', () => {
   });
 
   test('GET returns 401 when no api key provided', async () => {
-    const req = { headers: { get: (_: string) => null } } as any;
+    const req = createRequest(() => null);
 
-    const res: any = await auditRoute.GET(req);
+    const res = (await auditRoute.GET(req)) as MockJsonResult<{ error: string }>;
 
     expect(res.payload).toEqual({ error: 'Unauthorized' });
     expect(res.opts).toBeDefined();
@@ -56,13 +88,15 @@ describe('Audit route API', () => {
 
     mockReadFile.mockResolvedValueOnce(JSON.stringify(sample));
 
-    const req = {
-      headers: {
-        get: (name: string) => (name.toLowerCase() === 'x-api-key' ? 'secret-key' : null),
-      },
-    } as any;
+    const req = createRequest((name) => (name.toLowerCase() === 'x-api-key' ? 'secret-key' : null));
 
-    const res: any = await auditRoute.GET(req);
+    const res = (await auditRoute.GET(req)) as MockJsonResult<{
+      totalSubmissions: number;
+      averageScore: number;
+      dateRange: { earliest: string; latest: string } | null;
+      recentSubmissions: unknown[];
+      uniqueSessions: number;
+    }>;
 
     // payload is the summary object
     expect(res.payload.totalSubmissions).toBe(3);
@@ -85,13 +119,13 @@ describe('Audit route API', () => {
 
     mockReadFile.mockRejectedValueOnce(new Error('file not found'));
 
-    const req = {
-      headers: {
-        get: (name: string) => (name.toLowerCase() === 'x-api-key' ? 'secret-key' : null),
-      },
-    } as any;
+    const req = createRequest((name) => (name.toLowerCase() === 'x-api-key' ? 'secret-key' : null));
 
-    const res: any = await auditRoute.GET(req);
+    const res = (await auditRoute.GET(req)) as MockJsonResult<{
+      totalSubmissions: number;
+      averageScore: number;
+      dateRange: { earliest: string; latest: string } | null;
+    }>;
 
     expect(res.payload.totalSubmissions).toBe(0);
     expect(res.payload.averageScore).toBe(0);
@@ -99,9 +133,9 @@ describe('Audit route API', () => {
   });
 
   test('DELETE returns 401 when no api key provided', async () => {
-    const req = { headers: { get: (_: string) => null } } as any;
+    const req = createRequest(() => null);
 
-    const res: any = await auditRoute.DELETE(req);
+    const res = (await auditRoute.DELETE(req)) as MockJsonResult<{ error: string }>;
 
     expect(res.payload).toEqual({ error: 'Unauthorized' });
     expect(res.opts.status).toBe(401);
@@ -110,15 +144,11 @@ describe('Audit route API', () => {
   test('DELETE clears file when authorized', async () => {
     process.env.API_KEY = 'secret-key';
 
-    const req = {
-      headers: {
-        get: (name: string) => (name.toLowerCase() === 'x-api-key' ? 'secret-key' : null),
-      },
-    } as any;
+    const req = createRequest((name) => (name.toLowerCase() === 'x-api-key' ? 'secret-key' : null));
 
-    mockWriteFile.mockResolvedValueOnce(undefined as any);
+    mockWriteFile.mockResolvedValueOnce(undefined);
 
-    const res: any = await auditRoute.DELETE(req);
+    const res = (await auditRoute.DELETE(req)) as MockJsonResult<{ message: string }>;
 
     expect(res.payload).toEqual({ message: 'Audit logs cleared' });
     // verify writeFile call

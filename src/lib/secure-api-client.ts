@@ -3,7 +3,13 @@
  */
 
 import { E2EEncryption } from './encryption';
-import { RateLimiter, SecurityEventType, SecurityLevel, SecurityMonitor } from './security-monitor';
+import {
+  RateLimiter,
+  SecurityEvent,
+  SecurityEventType,
+  SecurityLevel,
+  SecurityMonitor,
+} from './security-monitor';
 
 export class SecureApiClient {
   private static encryptionKey: CryptoKey | null = null;
@@ -264,7 +270,18 @@ export class SecureApiClient {
   /**
    * Get security summary
    */
-  static getSecuritySummary() {
+  static getSecuritySummary(): {
+    sessionId: string;
+    hasEncryptionKey: boolean;
+    hasEncryptedData: boolean;
+    securityEvents: {
+      totalEvents: number;
+      criticalCount: number;
+      warningCount: number;
+      infoCount: number;
+      recentCritical: SecurityEvent[];
+    };
+  } {
     return {
       sessionId: this.sessionId,
       hasEncryptionKey: !!this.encryptionKey,

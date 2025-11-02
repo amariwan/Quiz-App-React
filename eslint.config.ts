@@ -1,8 +1,10 @@
 module.exports = [
   {
     ignores: [
-      '**/node_modules/**',
+      '.next/**',
       '**/.next/**',
+      '**/.next/**/*',
+      '**/node_modules/**',
       '**/out/**',
       '**/dist/**',
       '**/playwright-report/**',
@@ -10,7 +12,8 @@ module.exports = [
       '**/coverage/**',
       '**/.turbo/**',
     ],
-
+  },
+  {
     files: ['**/*.{js,jsx,ts,tsx,cjs,mjs}'],
 
     languageOptions: {
@@ -21,13 +24,8 @@ module.exports = [
         ecmaFeatures: { jsx: true },
       },
 
-      // Flat config does not support `env`. Define commonly used globals explicitly
-      // so ESLint doesn't complain about undefined variables from browser/node/jest.
       globals: {
-        // React
         React: 'readonly',
-
-        // Browser globals
         window: 'readonly',
         document: 'readonly',
         navigator: 'readonly',
@@ -35,15 +33,11 @@ module.exports = [
         localStorage: 'readonly',
         sessionStorage: 'readonly',
         Event: 'readonly',
-
-        // Node globals
         process: 'readonly',
         Buffer: 'readonly',
         __dirname: 'readonly',
         __filename: 'readonly',
         global: 'readonly',
-
-        // Jest testing globals
         describe: 'readonly',
         test: 'readonly',
         it: 'readonly',
@@ -61,8 +55,10 @@ module.exports = [
     rules: {
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/explicit-module-boundary-types': 'warn',
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
-
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
       'no-unused-vars': 'off',
       'no-console': ['warn', { allow: ['warn', 'error'] }],
     },

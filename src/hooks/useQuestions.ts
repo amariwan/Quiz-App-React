@@ -7,7 +7,13 @@ type QuestionsResponse = {
   questions?: QuestionData[];
 };
 
-export default function useQuestions() {
+export default function useQuestions(): {
+  questions: QuestionData[] | null;
+  loading: boolean;
+  error: Error | null;
+  reload: () => Promise<void>;
+  setQuestions: (questions: QuestionData[]) => void;
+} {
   const [questions, setQuestions] = useState<QuestionData[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);

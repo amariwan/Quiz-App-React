@@ -2,6 +2,8 @@
  * Security Monitoring and Audit System
  */
 
+import { SelectionsMap } from '@/types';
+
 export enum SecurityEventType {
   ENCRYPTION_KEY_GENERATED = 'ENCRYPTION_KEY_GENERATED',
   DATA_ENCRYPTED = 'DATA_ENCRYPTED',
@@ -228,7 +230,7 @@ export class InputValidator {
   /**
    * Validate selections object
    */
-  static validateSelections(selections: any): boolean {
+  static validateSelections(selections: SelectionsMap): boolean {
     if (!selections || typeof selections !== 'object') {
       SecurityMonitor.log(
         SecurityEventType.VALIDATION_FAILED,

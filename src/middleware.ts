@@ -28,7 +28,7 @@ function generateNonce(): string {
   return btoa(String.fromCharCode(...array));
 }
 
-export async function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest): Promise<NextResponse> {
   if (req.nextUrl.pathname.startsWith('/api')) {
     const xff = req.headers.get('x-forwarded-for');
     const ip = xff ? xff.split(',')[0].trim() : (req.headers.get('x-real-ip') ?? '127.0.0.1');
