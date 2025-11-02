@@ -1,4 +1,4 @@
- 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { jest } from '@jest/globals';
 
 // Mocks must be set up before importing the module under test
@@ -7,7 +7,7 @@ const mockExportKey = jest.fn(async (_: any) => 'exported-key');
 const mockImportKey = jest.fn(async (_: any) => ({ key: 'imported' }));
 const mockEncrypt = jest.fn(async (data: any) => JSON.stringify(data));
 const mockDecrypt = jest.fn(async (s: any) => JSON.parse(s));
-const mockGenerateHash = jest.fn(async (d: any) => 'hash123');
+const mockGenerateHash = jest.fn(async (_d: any) => 'hash123');
 const mockVerifyHash = jest.fn(async (_d: any, _h: any) => true);
 
 jest.mock('./encryption', () => ({
