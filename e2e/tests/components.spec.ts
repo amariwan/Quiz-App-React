@@ -31,7 +31,9 @@ test.describe('Components e2e smoke tests', () => {
     // after progressing, the restart button may be present but not immediately visible (e.g. offscreen or hidden during transitions),
     // assert it exists in the DOM and has the expected text rather than strictly requiring visibility
     await expect(page.locator('button.restart-button')).toHaveCount(1);
-    await expect(page.locator('button.restart-button')).toHaveText(/(Restart Quiz|Quiz neu starten)/);
+    await expect(page.locator('button.restart-button')).toHaveText(
+      /(Restart Quiz|Quiz neu starten)/,
+    );
   });
 
   test('SecurityDashboard export audit log triggers download', async ({ page }) => {
