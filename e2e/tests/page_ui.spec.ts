@@ -7,6 +7,6 @@ test('Main page renders title and start button', async ({ page }) => {
   const title = await page.textContent('h1.intro-title');
   expect(title).toBeTruthy();
 
-  // Start button should be visible
-  await expect(page.locator('text=Start Quiz')).toBeVisible();
+  // Start button should be visible (use role-based locator to avoid ambiguous matches)
+  await expect(page.getByRole('button', { name: 'Start Quiz', exact: true })).toBeVisible();
 });

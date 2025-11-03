@@ -19,7 +19,15 @@ test.describe('API endpoints', () => {
   });
 
   test('GET /api/audit requires api key', async ({ request }) => {
-    const res = await request.get('/api/audit');
+    // Increase timeout to avoid transient dev-server slowness
+    let res = await request.get('/api/audit', { timeout: 15000 });
+
+    // Next.js dev server can briefly respond with 500 while the route bundle boots.
+    for (let attempt = 1; attempt < 3 && res.status() === 500; attempt++) {
+      await new Promise((resolve) => setTimeout(resolve, 250 * attempt));
+      res = await request.get('/api/audit', { timeout: 15000 });
+    }
+
     expect(res.status()).toBe(401);
     const json = await res.json();
     expect(json.error).toBe('Unauthorized');

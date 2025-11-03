@@ -66,21 +66,30 @@ export function SecurityDashboard(): React.ReactElement | null {
         transition: 'all 0.3s ease',
       }}
     >
-      <div
+      <button
+        type="button"
+        aria-expanded={expanded}
+        aria-controls="security-monitor-panel"
+        onClick={() => setExpanded(!expanded)}
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           marginBottom: '10px',
           cursor: 'pointer',
+          width: '100%',
+          padding: 0,
+          border: 'none',
+          background: 'transparent',
+          color: 'inherit',
+          font: 'inherit',
         }}
-        onClick={() => setExpanded(!expanded)}
       >
-        <div style={{ fontWeight: 'bold', fontSize: '14px' }}>🔒 Security Monitor</div>
-        <div style={{ fontSize: '18px' }}>{expanded ? '−' : '+'}</div>
-      </div>
+        <span style={{ fontWeight: 'bold', fontSize: '14px' }}>🔒 Security Monitor</span>
+        <span style={{ fontSize: '18px' }}>{expanded ? '−' : '+'}</span>
+      </button>
 
-      <div style={{ marginBottom: '10px' }}>
+      <div style={{ marginBottom: '10px' }} id="security-monitor-panel">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '5px' }}>
           <span
             style={{
