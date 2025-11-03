@@ -1,7 +1,9 @@
 // Jest setup file: silence or filter noisy console output during tests
 
-const originalWarn = console.warn.bind(console);
-const originalError = console.error.bind(console);
+// A small typed wrapper around console methods so we don't use `any`.
+type ConsoleFn = (...data: unknown[]) => void;
+const originalWarn = console.warn.bind(console) as unknown as ConsoleFn;
+const originalError = console.error.bind(console) as unknown as ConsoleFn;
 
 const IGNORED_WARN_PREFIXES = ['[RATE_LIMIT]', '[SECURITY]', '[ANTI_CHEAT]'];
 
@@ -17,8 +19,7 @@ console.warn = (...args: unknown[]) => {
   } catch {
     // fall through to original warn
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (originalWarn as any)(...args);
+  originalWarn(...args);
 };
 
 console.error = (...args: unknown[]) => {
@@ -27,27 +28,24 @@ console.error = (...args: unknown[]) => {
   } catch {
     // fall through to original error
   }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (originalError as any)(...args);
+  originalError(...args);
 };
 
 // Filter Node process warnings (like the `--localstorage-file` warning shown in tests)
 process.on('warning', (warning: unknown) => {
   try {
-    // coerce to string safely
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const msg = (warning as any)?.message ?? String(warning);
+    // coerce to an object with optional fields, then to string safely
+    const w = warning as { name?: string; message?: string } | undefined;
+    const msg = w?.message ?? String(warning);
     if (String(msg).includes('--localstorage-file')) return;
   } catch {
     // ignore
   }
   // For other warnings, re-emit to the console so they aren't silently dropped
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  originalWarn(
-    '[process warning]',
-    (warning as any)?.name,
-    (warning as any)?.message ?? String(warning),
-  );
+  const w = warning as { name?: string; message?: string } | undefined;
+  const msg = w?.message ?? String(warning);
+
+  originalWarn('[process warning]', w?.name, msg);
 });
 
 // Optionally, you can restore the originals in afterAll if you prefer; leave as-is for test lifetime.
