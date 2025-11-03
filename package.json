@@ -11,8 +11,8 @@
     "test:all": "npm run test && npm run test:e2e",
     "lint": "eslint --ext .js,.ts,.tsx .",
     "lint:fix": "eslint --ext .js,.ts,.tsx . --fix",
-  "format": "prettier --write .",
-  "format:fix": "prettier --write .",
+    "format": "prettier --write .",
+    "format:fix": "prettier --write .",
     "check:all": "npm run lint && npm run format && npm run test:all",
     "fix:all": "npm run lint:fix && npm run format:fix"
   },
