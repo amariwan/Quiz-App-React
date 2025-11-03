@@ -7,6 +7,8 @@ out/
 build/
 dist/
 
+.history/
+
 # Environment files
 .env
 .env.local

@@ -7,12 +7,14 @@ test('Layout renders locale switcher and toggles language', async ({ page }) => 
   await expect(page.getByRole('button', { name: 'DE', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'EN', exact: true })).toBeVisible();
 
-  // Heading initially English (from locales/en.json)
-  await page.waitForSelector('h1.intro-title');
-  const titleBefore = await page.textContent('h1.intro-title');
-  expect(titleBefore).toBeTruthy();
+  const introTitle = page.locator('h1.intro-title');
+  await expect(introTitle).toBeVisible();
+
+  // Switch to English first so the toggle path is deterministic
+  await page.getByRole('button', { name: 'EN', exact: true }).click();
+  await expect(introTitle).toHaveText(/Flashcards AP Part 1/);
 
   // Click DE and expect German title (use role-based click)
   await page.getByRole('button', { name: 'DE', exact: true }).click();
-  await expect(page.locator('h1.intro-title')).toHaveText(/Lernkarten AP Teil 1/);
+  await expect(introTitle).toHaveText(/Lernkarten AP Teil 1/);
 });

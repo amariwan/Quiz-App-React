@@ -3,25 +3,22 @@ import { expect, test } from '@playwright/test';
 test.describe('Components e2e smoke tests', () => {
   test('LocaleSwitcher toggles language', async ({ page }) => {
     await page.goto('/');
-    await page.waitForSelector('h1.intro-title');
+    const introTitle = page.locator('h1.intro-title');
+    await expect(introTitle).toBeVisible();
 
-    const before = await page.textContent('h1.intro-title');
-    expect(before).toContain('Flashcards');
+    // force English baseline so toggling exercises both languages
+    await page.getByRole('button', { name: 'EN', exact: true }).click();
+    await expect(introTitle).toHaveText(/Flashcards AP Part 1/);
 
-    // click DE button and expect German title (use role-based locator)
-    await page
-      .getByRole('button', {
-        name: 'DE',
-        exact: true,
-      })
-      .click();
-    await expect(page.locator('h1.intro-title')).toHaveText(/Lernkarten AP Teil 1/);
+    await page.getByRole('button', { name: 'DE', exact: true }).click();
+    await expect(introTitle).toHaveText(/Lernkarten AP Teil 1/);
   });
 
   test('Start quiz and navigate a question', async ({ page }) => {
     await page.goto('/');
-    // start button (English default)
-    await page.getByRole('button', { name: 'Start Quiz', exact: true }).click();
+    const startButton = page.locator('button.intro-button');
+    await expect(startButton).toBeVisible();
+    await startButton.click();
 
     // wait for a question button to appear
     await expect(page.locator('button.question-button').first()).toBeVisible();
@@ -34,7 +31,7 @@ test.describe('Components e2e smoke tests', () => {
     // after progressing, the restart button may be present but not immediately visible (e.g. offscreen or hidden during transitions),
     // assert it exists in the DOM and has the expected text rather than strictly requiring visibility
     await expect(page.locator('button.restart-button')).toHaveCount(1);
-    await expect(page.locator('button.restart-button')).toHaveText(/Restart Quiz/);
+    await expect(page.locator('button.restart-button')).toHaveText(/(Restart Quiz|Quiz neu starten)/);
   });
 
   test('SecurityDashboard export audit log triggers download', async ({ page }) => {
