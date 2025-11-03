@@ -1,5 +1,40 @@
 // Jest setup file: silence or filter noisy console output during tests
 
+// Provide a minimal `sessionStorage` polyfill for the Node test environment.
+// Some Node-based Jest environments do not expose the browser API, so we shim
+// the storage object on `globalThis`.
+const globalScope = globalThis as typeof globalThis & { sessionStorage?: Storage };
+if (typeof globalScope.sessionStorage === 'undefined') {
+  const storage: Record<string, string> = Object.create(null);
+
+  const sessionMock: Storage = {
+    get length() {
+      return Object.keys(storage).length;
+    },
+    clear: () => {
+      for (const key of Object.keys(storage)) {
+        delete storage[key];
+      }
+    },
+    getItem: (key: string) =>
+      Object.prototype.hasOwnProperty.call(storage, key) ? storage[key] : null,
+    key: (index: number) => Object.keys(storage)[index] ?? null,
+    removeItem: (key: string) => {
+      delete storage[key];
+    },
+    setItem: (key: string, value: string) => {
+      storage[key] = String(value);
+    },
+  };
+
+  Object.defineProperty(globalScope, 'sessionStorage', {
+    value: sessionMock,
+    configurable: true,
+    enumerable: false,
+    writable: true,
+  });
+}
+
 // A small typed wrapper around console methods so we don't use `any`.
 type ConsoleFn = (...data: unknown[]) => void;
 const originalWarn = console.warn.bind(console) as unknown as ConsoleFn;
